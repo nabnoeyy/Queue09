@@ -1,0 +1,158 @@
+/* ตั้งค่าพื้นหลังและตัวอักษร */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f1f1f1; /* เปลี่ยนสีพื้นหลังให้ดูอ่อนและสบายตากว่า */
+  color: #333;
+  text-align: center;
+  padding: 20px;
+  margin: 0;
+}
+
+/* ปรับแต่งหัวข้อ */
+h1 {
+  color: #d63384; /* สีชมพู */
+  font-size: 3rem; /* เพิ่มขนาดตัวอักษร */
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* เพิ่มเงาให้กับตัวอักษร */
+}
+
+/* ปรับแต่งปุ่ม */
+button {
+  margin: 10px;
+  font-size: 1.2rem;
+  padding: 12px 25px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* เพิ่มเงาให้ปุ่ม */
+}
+
+/* ปุ่ม Join Queue */
+#enqueueBtn {
+  background-color: #28a745; /* สีเขียว */
+  color: white;
+}
+
+#enqueueBtn:hover {
+  background-color: #218838;
+  transform: translateY(-2px); /* ทำให้ปุ่มลอยขึ้นเมื่อกด */
+}
+
+/* ปุ่ม Call Next */
+#dequeueBtn {
+  background-color: #007bff; /* สีฟ้า */
+  color: white;
+}
+
+#dequeueBtn:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px); /* ทำให้ปุ่มลอยขึ้นเมื่อกด */
+}
+
+/* ปุ่ม Clear Queue */
+#cls {
+  background-color: #dc3545; /* สีแดง */
+  color: white;
+}
+
+#cls:hover {
+  background-color: #c82333;
+  transform: translateY(-2px); /* ทำให้ปุ่มลอยขึ้นเมื่อกด */
+}
+
+/* กล่องใส่ข้อมูล */
+input.form-control {
+  margin-bottom: 15px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  padding: 12px;
+  border: 1px solid #ddd;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* เพิ่มเงาให้กับ input */
+  transition: border-color 0.3s ease;
+}
+
+input.form-control:focus {
+  border-color: #d63384; /* ทำให้กรอบของ input เปลี่ยนสีเมื่อคลิก */
+  outline: none;
+}
+
+/* แสดงข้อมูลคิว */
+#queueList {
+  margin-top: 30px;
+  font-size: 1.25rem;
+}
+
+.circle {
+  background-color: #f1f1f1;
+  border: 2px solid #d63384; /* สีชมพู */
+  border-radius: 50%;
+  display: inline-block;
+  padding: 12px 24px;
+  margin: 5px;
+  font-size: 1.2rem;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* เพิ่มเงาให้กับวงกลม */
+}
+
+/* ปรับแต่งหัวข้อย่อย */
+h3 {
+  color: #d63384; /* สีชมพู */
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 40px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* เพิ่มเงาให้กับหัวข้อย่อย */
+}
+
+/* แสดงหมายเลขคิวถัดไป */
+#nextQueueNumber {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #d63384;
+  margin-top: 20px;
+  text-transform: uppercase; /* ทำให้เป็นตัวพิมพ์ใหญ่ทั้งหมด */
+}
+
+/* แสดงจำนวนลูกค้าที่ถูกเรียกแล้ว */
+#calledCount {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #007bff; /* สีน้ำเงิน */
+  margin-top: 20px;
+}
+
+/* แสดงรายชื่อผู้ที่ถูกเรียก */
+#calledList {
+  margin-top: 20px;
+  font-size: 1.15rem;
+  list-style-type: none;
+  padding-left: 0;
+}
+
+#calledList li {
+  padding: 12px;
+  background-color: #ffffff;
+  border: 1px solid #f1f1f1;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+#calledList li:hover {
+  background-color: #dff0d8; /* เปลี่ยนสีพื้นหลังเมื่อ hover */
+  transform: translateX(5px); /* ทำให้ย้ายไปข้างขวาเมื่อ hover */
+}
+
+#calledList li:last-child {
+  border-bottom: none;
+}
+
+.customer-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+  border: 2px solid #ddd; /* เพิ่มกรอบให้รูปภาพ */
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* เพิ่มเงาให้รูปภาพ */
+}

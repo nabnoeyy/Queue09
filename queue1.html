@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Queue System</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <h1>Queue System</h1>
+    <div class="mb-3">
+        <div class="row">
+            <div class="col">
+                <input class="form-control" type="text" id="customerName" placeholder="Enter customer name" />
+            </div>
+            <div class="col">
+                <input class="form-control" type="text" id="customerPhone" placeholder="Enter customer phone number" />
+            </div>
+            <div class="col">
+                <input type="file" id="customerImage" accept="image/*" />
+                <button class="btn btn-success" id="enqueueBtn">Join Queue</button>
+                <button class="btn btn-primary" id="dequeueBtn">Call Next</button>
+                <button class="btn btn-danger" id="cls">Clear Queue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Queue Display Section -->
+    <div id="queueList"></div>
+
+    <!-- Next Queue Number Display -->
+    <div id="nextQueueNumber" style="margin-top: 20px; font-size: 1.25rem; font-weight: bold; color: #333;"></div>
+
+    <!-- Number of Customers Called Display -->
+    <div id="calledCount" style="margin-top: 20px; font-size: 1.25rem;"></div>
+
+    <!-- Display called customers -->
+    <div>
+        <h3>Called Customers:</h3>
+        <ul id="calledList"></ul>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
