@@ -1,73 +1,91 @@
 let queue = [];
 let number = [];
 let images = [];
-let calledCustomers = []; // สำหรับบันทึกประวัติการเรียก
+let calledCustomers = [];
 const maxQueueSize = 10;
 
-const callSound = new Audio("call_sound.mp3"); // เสียงเรียกคิว
-callSound.volume = 1; // ปรับระดับเสียงให้ดังขึ้น
+const callSound = new Audio("call_sound.mp3");
+callSound.volume = 1;
 
-document.getElementById("enqueueBtn").addEventListener("click", () => {
-  const customerName = document.getElementById("customerName").value;
-  const customerPhone = document.getElementById("customerPhone").value;
+// Event listeners
+document.getElementById("enqueueBtn").addEventListener("click", enqueueCustomer);
+document.getElementById("dequeueBtn").addEventListener("click", dequeueCustomer);
+document.getElementById("cls").addEventListener("click", clearQueue);
+
+// Function to enqueue customer
+function enqueueCustomer() {
+  const customerName = document.getElementById("customerName").value.trim();
+  const customerPhone = document.getElementById("customerPhone").value.trim();
   const customerImage = document.getElementById("customerImage").files[0];
 
-  if (queue.length < maxQueueSize) {
-    if (customerName && customerPhone && customerImage) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        queue.push(customerName);
-        number.push(customerPhone);
-        images.push(e.target.result); // Save the image base64 data
+  const phoneRegex = /^\d{10}$/; // Validate 10-digit phone number
 
-        document.getElementById("customerName").value = "";
-        document.getElementById("customerPhone").value = "";
-        document.getElementById("customerImage").value = ""; // Clear the image input
-
-        updateQueueDisplay();
-      };
-      reader.readAsDataURL(customerImage); // Convert image to base64
-    } else {
-      alert("Please fill in all fields and select an image.");
-    }
-  } else {
+  if (queue.length >= maxQueueSize) {
     alert("Queue is Full");
+    return;
   }
-});
 
-document.getElementById("dequeueBtn").addEventListener("click", () => {
+  if (!customerName || !phoneRegex.test(customerPhone) || !customerImage) {
+    alert("Please fill in all fields with valid data and select an image.");
+    return;
+  }
+
+  if (queue.includes(customerName)) {
+    alert("This customer is already in the queue.");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    queue.push(customerName);
+    number.push(customerPhone);
+    images.push(e.target.result);
+
+    document.getElementById("customerName").value = "";
+    document.getElementById("customerPhone").value = "";
+    document.getElementById("customerImage").value = "";
+
+    updateQueueDisplay();
+  };
+  reader.readAsDataURL(customerImage);
+}
+
+// Function to dequeue customer
+function dequeueCustomer() {
   if (queue.length > 0) {
     const dequeuedCustomer = queue.shift();
     const dequeuedPhone = number.shift();
-    images.shift(); // Remove the image of the served customer
-    calledCustomers.push({ name: dequeuedCustomer, phone: dequeuedPhone }); // บันทึกรายการเรียก
+    images.shift();
+    calledCustomers.push({ name: dequeuedCustomer, phone: dequeuedPhone });
 
-    // Play call sound
     callSound.play();
+    callOutCustomer(dequeuedCustomer, dequeuedPhone);
 
-    alert("Next Customer: " + dequeuedCustomer + " Phone: " + dequeuedPhone);
+    alert(`Next Customer: ${dequeuedCustomer} Phone: ${dequeuedPhone}`);
     updateQueueDisplay();
-    updateCalledList(); // อัพเดตรายการที่ถูกเรียก
+    updateCalledList();
   } else {
     alert("No more customers in the queue.");
   }
-});
+}
 
-document.getElementById("cls").addEventListener("click", () => {
+// Function to clear the queue
+function clearQueue() {
   if (queue.length > 0) {
     queue.length = 0;
     number.length = 0;
-    images.length = 0; // Clear the image array
-    calledCustomers = []; // เคลียร์ประวัติการเรียก
+    images.length = 0;
+    calledCustomers.length = 0;
+
     alert("Queue Cleared!!!");
     updateQueueDisplay();
     updateCalledList();
   } else {
     alert("No more customers in the queue.");
   }
-});
+}
 
-// Function to update the queue display
+// Function to update queue display
 function updateQueueDisplay() {
   const queueList = document.getElementById("queueList");
   queueList.innerHTML = "";
@@ -78,17 +96,14 @@ function updateQueueDisplay() {
     queue.forEach((customer, index) => {
       queueList.innerHTML += `
         <div class="queue-item">
-            <img src="${
-              images[index]
-            }" alt="Customer Image" class="customer-img" />
-            <p>${index + 1}. ${customer} - ${number[index]}</p>
-        </div>
-      `;
+          <img src="${images[index]}" alt="Customer Image" class="customer-img" />
+          <p>${index + 1}. ${customer} - ${number[index]}</p>
+        </div>`;
     });
   }
 }
 
-// Function to update the called list display
+// Function to update called list display
 function updateCalledList() {
   const calledList = document.getElementById("calledList");
   calledList.innerHTML = "";
@@ -97,11 +112,22 @@ function updateCalledList() {
     calledList.innerHTML = "<h3>No Customers Called Yet</h3>";
   } else {
     calledCustomers.forEach((customer, index) => {
-      calledList.innerHTML += `
-        <li>${index + 1}. ${customer.name} - ${customer.phone}</li>
-      `;
+      calledList.innerHTML += `<li>${index + 1}. ${customer.name} - ${customer.phone}</li>`;
     });
   }
+}
+
+// Function to call out customer details with Text-to-Speech
+function callOutCustomer(name, phone) {
+  const speechSynthesis = window.speechSynthesis;
+  const utterance = new SpeechSynthesisUtterance(
+    `Next Customer, ${name}, phone number, ${phone}`
+  );
+  utterance.lang = "en-US";
+  utterance.volume = 1;
+  utterance.rate = 1;
+  utterance.pitch = 1;
+  speechSynthesis.speak(utterance);
 }
 
 // Automatically call the next customer every 20 seconds
@@ -109,19 +135,14 @@ setInterval(() => {
   if (queue.length > 0) {
     const dequeuedCustomer = queue.shift();
     const dequeuedPhone = number.shift();
-    images.shift(); // Remove the image of the served customer
-    calledCustomers.push({ name: dequeuedCustomer, phone: dequeuedPhone }); // บันทึกข้อมูลการเรียก
+    images.shift();
+    calledCustomers.push({ name: dequeuedCustomer, phone: dequeuedPhone });
 
-    // Play call sound (ดังขึ้น)
     callSound.play();
+    callOutCustomer(dequeuedCustomer, dequeuedPhone);
 
-    alert(
-      "Auto Calling Next Customer: " +
-        dequeuedCustomer +
-        " Phone: " +
-        dequeuedPhone
-    );
+    alert(`Auto Calling Next Customer: ${dequeuedCustomer} Phone: ${dequeuedPhone}`);
     updateQueueDisplay();
-    updateCalledList(); // อัพเดตรายการที่ถูกเรียก
+    updateCalledList();
   }
-}, 200000); // 20 seconds interval
+}, 20000); // 20 seconds
